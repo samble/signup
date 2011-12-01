@@ -13,27 +13,37 @@ from _data import (HISTORY_FIELDS, INCOMING_FIELDS,
 
 print SQLITE_DB_PATH
 
-def handle(environ, start_response):
+def mutate_fields(fields):
+    """ currently this actually mutates the fields in place.
+        we'll still return them anyway, just in case that part
+        of the implementation changes.
+    """
+    # Save entire post body for postback verification
+    fields['post_body'] = formbody
+
+    # If it's not a test, mark it so manually
+    if 'test_ipn' not in fields:
+        fields['test_ip'] = 0
+
+    return fields
+
+def handle_fields(fields):
     """ docstring """
+    insertPaypalTransaction(fields)
+
+def handle(environ, start_response):
+    """ boiler plate for wsgi stuff """
     try:
         start_response('200 OK', [('Content-Type', 'text/plain')])
         formbody = environ['wsgi.input'].read()
         fields = parse_qs(formbody)
-
-        # Save entire post body for postback verification
-        fields['post_body'] = formbody
-
-        # If it's not a test, mark it so manually
-        if not 'test_ipn' in fields:
-            fields['test_ip'] = 0
-
-        insertPaypalTransaction(fields)
-
+        fields = mutate_fields(fields)
+        handle_fields(fields)
     except Exception as ex:
         exInfo = traceback.format_exc()
         logException(ex, exInfo)
-
-    return [str(fields)]
+    else:
+        return [str(fields)]
 
 def insertPaypalTransaction(fieldDict):
     """ docstring """

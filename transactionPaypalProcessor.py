@@ -4,7 +4,7 @@ from _include import *
 from sys import exit
 import sqlite3
 
-if not __name__ = 'main':
+if not __name__ == 'main':
    exit(0) 
 
 QUERY_GET_INCOMING = '''SELECT
@@ -72,8 +72,8 @@ def process():
     cur.execute('begin exclusive transaction')
     cur.execute(QUERY_GET_INCOMING)
     incomingRow = cur.fetchone()
-    cur.execute(QUERY_INSERT_STATUS, 
-    cur.execute(QUERY_DELETE_INCOMING, (inomingRow['id']))
+    cur.execute(QUERY_INSERT_STATUS, a)
+    cur.execute(QUERY_DELETE_INCOMING, (incomingRow['id']))
     cur.commit()
 
 

@@ -1,7 +1,6 @@
 #!/usr/local/bin/python2.6
 import sqlite3
 import traceback
-from time import strftime
 from urlparse import parse_qs
 from exceptions import Exception
 

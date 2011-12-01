@@ -1,26 +1,24 @@
 #!/usr/local/bin/python2.6
 """ module doc string
 """
-import sqlite3
+import urllib
 import traceback
-
 from urlparse import parse_qs
-from exceptions import Exception
 import sys
 
-from _include import *
+import sqlite3
+
+from _include import (logException, SQLITE_DB_PATH, this_is_prod)
 from _data import (HISTORY_FIELDS, INCOMING_FIELDS,
                    QUERY_INSERT_HISTORY, QUERY_INSERT_INCOMING)
 
-print SQLITE_DB_PATH
-
-def mutate_fields(fields):
+def mutate_fields(fields, original_qs='original_qs-not-set'):
     """ currently this actually mutates the fields in place.
         we'll still return them anyway, just in case that part
         of the implementation changes.
     """
     # Save entire post body for postback verification
-    fields['post_body'] = formbody
+    fields['post_body'] = original_qs
 
     # If it's not a test, mark it so manually
     if 'test_ipn' not in fields:
@@ -38,7 +36,7 @@ def handle(environ, start_response):
         start_response('200 OK', [('Content-Type', 'text/plain')])
         formbody = environ['wsgi.input'].read()
         fields = parse_qs(formbody)
-        fields = mutate_fields(fields)
+        fields = mutate_fields(fields, original_qs=formbody)
         handle_fields(fields)
     except Exception as ex:
         exInfo = traceback.format_exc()
@@ -75,5 +73,30 @@ def main():
     from flup.server.fcgi import WSGIServer
     WSGIServer(handle).run()
 
+def niam():
+    """ alternative main """
+    from flask import Flask, request
+    app = Flask(__name__)
+
+    @app.route("/", methods=['GET', 'POST'])
+    def handle():
+
+        # originally..
+        #formbody = environ['wsgi.input'].read()
+        #fields = parse_qs(formbody)
+
+        # new..
+        formbody = urllib.urlencode(request.form)
+        fields = dict(request.form)
+        fields = mutate_fields(fields, original_qs=formbody)
+        handle_fields(fields)
+
+        return '\n'+str(dict(request.form))+'\n\n'
+
+    app.run(debug=True)
+
 if __name__ == '__main__':
-    main()
+    if this_is_prod():
+        main()
+    else:
+        niam()

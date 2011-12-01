@@ -10,8 +10,8 @@ import pdb
 import sqlite3
 
 from _include import (logException, SQLITE_DB_PATH, this_is_prod)
-from _data import (HISTORY_FIELDS, INCOMING_FIELDS,
-                   QUERY_INSERT_HISTORY, QUERY_INSERT_INCOMING)
+from _data import (PAYPAL_HISTORY_FIELDS, PAYPAL_INCOMING_FIELDS,
+                   QUERY_INSERT_PAYPAL_HISTORY, QUERY_INSERT_PAYPAL_INCOMING)
 
 def mutate_fields(fields, original_qs=''):
     """ currently this actually mutates the fields in place.
@@ -47,7 +47,7 @@ def handle(environ, start_response):
         exInfo = traceback.format_exc()
         logException(ex, exInfo)
     else:
-        return [str(fields)]
+        return []
 
 def insertPaypalTransaction(fieldDict):
     """ docstring """
@@ -55,15 +55,14 @@ def insertPaypalTransaction(fieldDict):
         _fieldDict = fieldDict.copy()
 
         con = sqlite3.connect(SQLITE_DB_PATH)
-        historyParams = dict((field, _fieldDict[field] if field in _fieldDict else '') for field in HISTORY_FIELDS)
-        open('output', 'a+').write(str(historyParams))
-        con.execute(QUERY_INSERT_HISTORY, historyParams)
+        historyParams = dict((field, _fieldDict[field] if field in _fieldDict else None) for field in PAYPAL_HISTORY_FIELDS)
+        con.execute(QUERY_INSERT_PAYPAL_HISTORY, historyParams)
 
         id = con.execute('select last_insert_rowid()').fetchone()[0]
         _fieldDict['history_id'] = id
 
-        incomingParams = dict((field, _fieldDict[field] if field in _fieldDict else '') for field in INCOMING_FIELDS)
-        con.execute(QUERY_INSERT_INCOMING, incomingParams)
+        incomingParams = dict((field, _fieldDict[field] if field in _fieldDict else None) for field in PAYPAL_INCOMING_FIELDS)
+        con.execute(QUERY_INSERT_PAYPAL_INCOMING, incomingParams)
 
         con.commit()
         con.close()

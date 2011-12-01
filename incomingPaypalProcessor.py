@@ -3,6 +3,7 @@ import sqlite3
 import traceback
 from urlparse import parse_qs
 from exceptions import Exception
+import sys
 
 from _include import *
 print SQLITE_DB_PATH
@@ -89,13 +90,14 @@ def insertPaypalTransaction(fieldDict):
 
         con = sqlite3.connect(SQLITE_DB_PATH)
 
-        historyParams = dict((field, _fieldDict[field]) for field in HISTORY_FIELDS)
+        historyParams = dict((field, _fieldDict[field][0] if field in _fieldDict else '') for field in HISTORY_FIELDS)
+        open('output', 'a+').write(str(historyParams))
         con.execute(QUERY_INSERT_HISTORY, historyParams)
 
         id = con.execute('select last_insert_rowid()').fetchone()[0]
         _fieldDict['history_id'] = id
 
-        incomingParams = dict((field, _fieldDict[field]) for field in INCOMING_FIELDS)
+        incomingParams = dict((field, _fieldDict[field][0] if field in _fieldDict else '') for field in INCOMING_FIELDS)
         con.execute(QUERY_INSERT_INCOMING, incomingParams)
 
         con.commit()

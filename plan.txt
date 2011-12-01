@@ -1,0 +1,58 @@
+IncomingPaypal
+	add full request body for verification
+IncomingPaypalHistory
+IncomingPaypalStatus
+	initial
+	success
+	payment incomplete
+	duplicate transaction id
+	unknown transaction type
+	invalid source?
+	failed to verify
+	verification negative
+	test ipn
+
+IncomingAmazon
+IncomingAmazonHistory
+IncomingPaypalStatus
+
+ProcessSignup
+ProcessSignupHistory
+ProcessSignupStatus
+	initial
+	success
+	bad characters
+	user exists
+	failed to create user
+	failed to email user
+	failed to create homedir
+	failed to create web dir
+	failed to create mail dir
+
+ProcessReset
+ProcessResetHistory
+ProcessResetStatus
+	initial
+	success
+	no such user
+	failed to set pw
+	failed to email user
+
+ProcessDonation
+ProcessDonationHistory
+ProcessDonationStatus
+	just thank people
+
+incomingProcessor.py
+	incomingPaypalProcessor.py
+	incomingAmazonProcessor.py
+
+transactionProcessor.py
+	transactionPaypalProcessor.py
+	transactionAmazonProcessor.py
+
+process.py - is anything really shared between em? write them first and see
+	processSignup.py
+	processReset.py
+	processDonation.py
+

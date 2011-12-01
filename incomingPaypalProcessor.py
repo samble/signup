@@ -6,6 +6,7 @@ from urlparse import parse_qs
 from exceptions import Exception
 
 from _include import *
+print SQLITE_DB_PATH
 
 HISTORY_FIELDS = ['last_name',
 'txn_id',
@@ -79,7 +80,7 @@ def handle(environ, start_response):
 
     except Exception as ex:
         exInfo = traceback.format_exc()
-        logException(exInfo, traceString)
+        logException(ex, exInfo)
 
     return []
 
@@ -103,7 +104,7 @@ def insertPaypalTransaction(fieldDict):
 
     except Exception as ex:
         exInfo = traceback.format_exc()
-        logException(exInfo, traceString)
+        logException(ex, exInfo)
 
 if __name__ == '__main__':
     from flup.server.fcgi import WSGIServer

@@ -1,3 +1,5 @@
+from time import strftime
+
 SQLITE_DB_PATH = '/var/wwws/cgi-bin/transactions.db'
 
 def logException(ex, traceString):

@@ -1,69 +1,21 @@
 #!/usr/local/bin/python2.6
+""" module doc string
+"""
 import sqlite3
 import traceback
+
 from urlparse import parse_qs
 from exceptions import Exception
 
 from _include import *
+from _data import (HISTORY_FIELDS, INCOMING_FIELDS,
+                   QUERY_INSERT_HISTORY, QUERY_INSERT_INCOMING)
+
 print SQLITE_DB_PATH
 
-HISTORY_FIELDS = ['last_name',
-'txn_id',
-'receiver_email',
-'payment_status',
-'reason_code',
-'tax',
-'payer_status',
-'residence_country',
-'invoice',
-'address_state',
-'item_name1',
-'txn_type',
-'address_street',
-'quantity1',
-'payment_date',
-'first_name',
-'mc_shipping',
-'item_name',
-'item_number1',
-'charset',
-'parent_txn_id',
-'custom',
-'notify_version',
-'address_name',
-'for_auction',
-'mc_gross_1',
-'test_ipn',
-'item_number',
-'receiver_id',
-'pending_reason',
-'business',
-'payer_id',
-'mc_handling1',
-'auction_closing_date',
-'mc_handling',
-'auction_buyer_id',
-'address_zip',
-'address_city',
-'receipt_ID',
-'mc_fee',
-'mc_currency',
-'shipping',
-'verify_sign',
-'payer_email',
-'payment_type',
-'mc_gross',
-'mc_shipping1',
-'quantity']
-
-INCOMING_FIELDS = HISTORY_FIELDS + ['post_body','history_id']
-
-QUERY_INSERT_HISTORY = 'INSERT INTO IncomingPaypalHistory (' + ','.join(HISTORY_FIELDS) + ') VALUES (' + ','.join([':' + field for field in HISTORY_FIELDS]) + ')'
-QUERY_INSERT_INCOMING = 'INSERT INTO IncomingPaypal (' + ','.join(INCOMING_FIELDS) + ') VALUES (' + ','.join([':' + field for field in INCOMING_FIELDS]) + ')'
-
 def handle(environ, start_response):
+    """ docstring """
     try:
-
         start_response('200 OK', [('Content-Type', 'text/plain')])
         formbody = environ['wsgi.input'].read()
         fields = parse_qs(formbody)
@@ -84,6 +36,7 @@ def handle(environ, start_response):
     return [str(fields)]
 
 def insertPaypalTransaction(fieldDict):
+    """ docstring """
     try:
         _fieldDict = fieldDict.copy()
 
@@ -105,7 +58,10 @@ def insertPaypalTransaction(fieldDict):
         exInfo = traceback.format_exc()
         logException(ex, exInfo)
 
-if __name__ == '__main__':
+def main():
+    """ docstring """
     from flup.server.fcgi import WSGIServer
     WSGIServer(handle).run()
 
+if __name__ == '__main__':
+    main()

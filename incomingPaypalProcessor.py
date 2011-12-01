@@ -82,7 +82,7 @@ def handle(environ, start_response):
         exInfo = traceback.format_exc()
         logException(ex, exInfo)
 
-    return []
+    return [str(fields)]
 
 def insertPaypalTransaction(fieldDict):
     try:

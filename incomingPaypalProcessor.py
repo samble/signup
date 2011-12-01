@@ -6,6 +6,7 @@ import traceback
 from urlparse import parse_qs
 import sys
 
+import pdb
 import sqlite3
 
 from _include import (logException, SQLITE_DB_PATH, this_is_prod)
@@ -17,6 +18,10 @@ def mutate_fields(fields, original_qs=''):
         we'll still return them anyway, just in case that part
         of the implementation changes.
     """
+
+    # Values don't need to be 1 element lists
+    fields = dict((i, fields[i][0]) for i in fields)
+
     # Save entire post body for postback verification
     fields['post_body'] = original_qs
 
@@ -50,15 +55,14 @@ def insertPaypalTransaction(fieldDict):
         _fieldDict = fieldDict.copy()
 
         con = sqlite3.connect(SQLITE_DB_PATH)
-
-        historyParams = dict((field, _fieldDict[field][0] if field in _fieldDict else '') for field in HISTORY_FIELDS)
+        historyParams = dict((field, _fieldDict[field] if field in _fieldDict else '') for field in HISTORY_FIELDS)
         open('output', 'a+').write(str(historyParams))
         con.execute(QUERY_INSERT_HISTORY, historyParams)
 
         id = con.execute('select last_insert_rowid()').fetchone()[0]
         _fieldDict['history_id'] = id
 
-        incomingParams = dict((field, _fieldDict[field][0] if field in _fieldDict else '') for field in INCOMING_FIELDS)
+        incomingParams = dict((field, _fieldDict[field] if field in _fieldDict else '') for field in INCOMING_FIELDS)
         con.execute(QUERY_INSERT_INCOMING, incomingParams)
 
         con.commit()

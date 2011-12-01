@@ -12,7 +12,7 @@ from _include import (logException, SQLITE_DB_PATH, this_is_prod)
 from _data import (HISTORY_FIELDS, INCOMING_FIELDS,
                    QUERY_INSERT_HISTORY, QUERY_INSERT_INCOMING)
 
-def mutate_fields(fields, original_qs='original_qs-not-set'):
+def mutate_fields(fields, original_qs=''):
     """ currently this actually mutates the fields in place.
         we'll still return them anyway, just in case that part
         of the implementation changes.

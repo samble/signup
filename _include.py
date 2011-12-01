@@ -1,10 +1,8 @@
 """ module doc string """
+import os
 from time import strftime
 
 import sqlite3
-
-SQLITE_DB_PATH = '/var/wwws/cgi-bin/transactions.db'
-LAST_RESORT = '/var/wwws/cgi-bin/last-resort.txt'
 
 def this_is_prod():
     """ prod environment predicate """
@@ -33,3 +31,10 @@ def logException(ex, traceString):
                           'FATALLY FUCKED UP HANDLING EXCEPTION!',
                           repr(ex), traceString])
             f.close()
+
+if this_is_prod():
+    SQLITE_DB_PATH = '/var/wwws/cgi-bin/transactions.db'
+    LAST_RESORT = '/var/wwws/cgi-bin/last-resort.txt'
+else:
+    SQLITE_DB_PATH = os.path.join(os.path.split(__file__)[0], 'transactions.db')
+    LAST_RESORT = os.path.join(os.path.split(__file__)[0], 'last-resort.txt')

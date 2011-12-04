@@ -1,0 +1,182 @@
+CREATE TABLE CurrentUser (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+username VARCHAR,
+email VARCHAR,
+source VARCHAR,
+source_id VARCHAR
+create_date VARCHAR default current_timestamp);
+
+CREATE TABLE Exceptions (
+filename varchar,
+type varchar,
+args varchar,
+message varchar,
+trace varchar,
+create_date varchar default current_timestamp);
+
+CREATE TABLE IncomingPaypal (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+history_id INTEGER, 
+last_name VARCHAR ,
+txn_id VARCHAR ,
+receiver_email VARCHAR ,
+payment_status VARCHAR ,
+reason_code VARCHAR ,
+tax DOUBLE ,
+payer_status VARCHAR ,
+residence_country VARCHAR ,
+invoice VARCHAR ,
+address_state VARCHAR ,
+item_name1 VARCHAR ,
+txn_type VARCHAR ,
+address_street VARCHAR ,
+quantity1 INTEGER ,
+payment_date VARCHAR ,
+first_name VARCHAR ,
+mc_shipping DOUBLE ,
+item_name VARCHAR ,
+item_number1 VARCHAR ,
+charset VARCHAR ,
+parent_txn_id INTEGER ,
+custom VARCHAR ,
+notify_version DOUBLE ,
+address_name VARCHAR ,
+for_auction VARCHAR ,
+mc_gross_1 DOUBLE ,
+test_ipn INTEGER ,
+item_number VARCHAR ,
+receiver_id VARCHAR ,
+pending_reason VARCHAR ,
+business VARCHAR ,
+payer_id VARCHAR ,
+mc_handling1 DOUBLE ,
+auction_closing_date VARCHAR ,
+mc_handling DOUBLE ,
+auction_buyer_id VARCHAR ,
+address_zip VARCHAR ,
+address_city VARCHAR ,
+receipt_ID VARCHAR ,
+mc_fee DOUBLE ,
+mc_currency VARCHAR ,
+shipping INTEGER ,
+verify_sign VARCHAR ,
+payer_email VARCHAR ,
+payment_type VARCHAR ,
+mc_gross DOUBLE ,
+mc_shipping1 DOUBLE ,
+quantity INTEGER,
+option_selection1 VARCHAR,
+option_name1 VARCHAR,
+post_body VARCHAR, 
+subscr_id VARCHAR,
+create_date VARCHAR default current_timestamp);
+
+CREATE TABLE IncomingPaypalHistory (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+last_name VARCHAR ,
+txn_id VARCHAR ,
+receiver_email VARCHAR ,
+payment_status VARCHAR ,
+reason_code VARCHAR ,
+tax DOUBLE ,
+payer_status VARCHAR ,
+residence_country VARCHAR ,
+invoice VARCHAR ,
+address_state VARCHAR ,
+item_name1 VARCHAR ,
+txn_type VARCHAR ,
+address_street VARCHAR ,
+quantity1 INTEGER ,
+payment_date VARCHAR ,
+first_name VARCHAR ,
+mc_shipping DOUBLE ,
+item_name VARCHAR ,
+item_number1 VARCHAR ,
+charset VARCHAR ,
+parent_txn_id INTEGER ,
+custom VARCHAR ,
+notify_version DOUBLE ,
+address_name VARCHAR ,
+for_auction VARCHAR ,
+mc_gross_1 DOUBLE ,
+test_ipn INTEGER ,
+item_number VARCHAR ,
+receiver_id VARCHAR ,
+pending_reason VARCHAR ,
+business VARCHAR ,
+payer_id VARCHAR ,
+mc_handling1 DOUBLE ,
+auction_closing_date VARCHAR ,
+mc_handling DOUBLE ,
+auction_buyer_id VARCHAR ,
+address_zip VARCHAR ,
+address_city VARCHAR ,
+receipt_ID VARCHAR ,
+mc_fee DOUBLE ,
+mc_currency VARCHAR ,
+shipping INTEGER ,
+verify_sign VARCHAR ,
+payer_email VARCHAR ,
+payment_type VARCHAR ,
+mc_gross DOUBLE ,
+mc_shipping1 DOUBLE ,
+quantity INTEGER,
+option_selection1 VARCHAR,
+option_name1 VARCHAR, 
+subscr_id VARCHAR,
+create_date VARCHAR default current_timestamp);
+
+CREATE TABLE IncomingPaypalStatus (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+history_id INTEGER,
+status VARCHAR,
+create_date VARCHAR,
+update_date VARCHAR default current_timestamp
+);
+
+CREATE TABLE ProcessReset (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+history_id integer,
+username VARCHAR,
+source VARCHAR,
+source_id VARCHAR,
+create_date VARCHAR DEFAULT current_timestamp
+);
+
+CREATE TABLE ProcessResetHistory (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+username VARCHAR,
+source VARCHAR,
+source_id VARCHAR,
+create_date VARCHAR DEFAULT current_timestamp
+);
+
+CREATE TABLE ProcessResetStatus (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+history_id INTEGER,
+status VARCHAR,
+create_date VARCHAR DEFAULT current_timestamp
+);
+
+CREATE TABLE ProcessSignup (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+history_id integer,
+source VARCHAR,
+source_id VARCHAR,
+username VARCHAR,
+email VARCHAR,
+create_date VARCHAR default current_timestamp);
+
+CREATE TABLE ProcessSignupHistory (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+source VARCHAR,
+source_id INTEGER,
+username VARCHAR,
+email VARCHAR,
+create_date VARCHAR DEFAULT current_timestamp);
+
+CREATE TABLE ProcessSignupStatus (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+history_id INTEGER,
+status VARCHAR,
+create_date VARCHAR DEFAULT current_timestamp);

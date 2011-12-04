@@ -1,3 +1,4 @@
+SD_RECEIVER_EMAIL = 'silencedefeat@gmail.com'
 
 PAYPAL_FIELDS = ['last_name',
 'txn_id',
@@ -52,7 +53,7 @@ PAYPAL_FIELDS = ['last_name',
 'option_name1']
 
 PAYPAL_HISTORY_FIELDS = PAYPAL_FIELDS
-PAYPAL_INCOMING_FIELDS = PAYPAL_HISTORY_FIELDS + ['post_body','history_id']
+PAYPAL_INCOMING_FIELDS = PAYPAL_FIELDS + ['post_body','history_id']
 
 QUERY_INSERT_PAYPAL_HISTORY = 'INSERT INTO IncomingPaypalHistory (' + \
                        ','.join(PAYPAL_HISTORY_FIELDS) + ') VALUES (' +\
@@ -66,6 +67,7 @@ QUERY_GET_PAYPAL_INCOMING = '''SELECT
 id,
 history_id,
 txn_id,
+txn_type,
 receiver_email,
 payment_status,
 item_name,
@@ -84,5 +86,16 @@ QUERY_INSERT_PAYPAL_STATUS = 'INSERT INTO IncomingPaypalStatus (history_id, stat
 
 QUERY_UPDATE_PAYPAL_STATUS = 'UPDATE IncomingPaypalStatus SET status = :status, update_date = current_timestamp where history_id = :history_id'
 
+QUERY_GET_PREVIOUS_TRANSACTIONID_COUNT = 'SELECT COUNT(*) FROM IncomingPaypalHistory WHERE id < :history_id AND txn_id = :txn_id'
 
-PAYPAL_VERIFY_URL = 'http://www.sandbox.paypal.com/cgi-bin/webscr'
+QUERY_INSERT_SIGNUP_HISTORY = 'INSERT INTO ProcessSignupHistory (source, source_id, username, email) VALUES (:source, :source_id, :username, :email)'
+
+QUERY_INSERT_SIGNUP_INCOMING = 'INSERT INTO ProcessSignup (source, source_id, username, email, history_id) VALUES (:source, :source_id, :username, :email, :history_id)'
+
+QUERY_INSERT_RESET_HISTORY = 'INSERT INTO ProcessResetHistory (source, source_id, username) VALUES (:source, :source_id, :username)'
+
+QUERY_INSERT_RESET_INCOMING = 'INSERT INTO ProcessReset (source, source_id, username, history_id) VALUES (:source, :source_id, :username, :history_id)'
+
+PAYPAL_VERIFY_URL = 'http://www.paypal.com/cgi-bin/webscr'
+PAYPAL_TEST_VERIFY_URL = 'http://www.sandbox.paypal.com/cgi-bin/webscr'
+

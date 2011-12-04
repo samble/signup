@@ -4,9 +4,7 @@
 import urllib
 import traceback
 from urlparse import parse_qs
-import sys
 
-import pdb
 import sqlite3
 
 from _include import (logException, SQLITE_DB_PATH, this_is_prod)

@@ -15,7 +15,7 @@ def this_is_dev():
 def logException(ex, traceString):
     """ docstring """
     if this_is_dev():
-        raise ex
+        raise
     else:
         try:
             con = sqlite3.connect(SQLITE_DB_PATH)
